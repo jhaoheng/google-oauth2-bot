@@ -1,9 +1,9 @@
 package main
 
 import (
-	"browser/googleoauth2"
 	"flag"
 	"fmt"
+	"google-oauth2-bot/googleoauth2"
 	"net/http"
 	"strings"
 )
