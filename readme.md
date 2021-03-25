@@ -1,3 +1,5 @@
+![google-oauth2-bot](./assets/google-oauth2-bot.svg)
+
 # Synopsis
 - Purpose : Get google oauth2 token by command line
     1. Open browser to authenticate
@@ -16,6 +18,8 @@ secret="......." &&\
 uri="http://localhost:8080/....." &&\
 go run main.go -id=$id -secret=$secret -redirectUri=$uri
 ```
-
+## Command Line result
 ![img1](./assets/img1.png)
+
+## Browser result
 ![img2](./assets/img2.png)
