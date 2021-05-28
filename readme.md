@@ -23,3 +23,25 @@ go run main.go -id=$id -secret=$secret -redirectUri=$uri
 
 ## Browser result
 ![img2](./assets/img2.png)
+
+
+# Use it to set environment within Postman
+
+## Pre-request Script
+```
+pm.sendRequest('http://localhost:8080/postman', (error, response) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(response.json().sub);
+    console.log(response.json().id_token);
+    //
+    pm.environment.set("google_oauth_sub", response.json().sub);
+    pm.environment.set("google_oauth_id_token", response.json().id_token);
+  }
+});
+```
+
+## Use environments
+- {{google_oauth_sub}}
+- {{google_oauth_id_token}}

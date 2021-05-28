@@ -7,10 +7,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"os/exec"
 	"runtime"
-	"time"
 )
 
 type GOAUTH2 struct {
@@ -49,10 +47,6 @@ func (o *GOAUTH2) ApplyToken(code string) (sub, idToken string) {
 	sub = o.GetSub(idToken)
 	fmt.Printf("sub =>\n%s\n\n", sub)
 	fmt.Printf("id token =>\n%s\n", idToken)
-
-	time.AfterFunc(time.Second*2, func() {
-		os.Exit(0)
-	})
 	return sub, idToken
 }
 

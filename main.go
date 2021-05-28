@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"google-oauth2-bot/googleoauth2"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 var client_id, cliet_secret, redirect_uri string
@@ -52,12 +54,34 @@ type helloHandler struct {
 	callback func(code string) (string, string)
 }
 
+var sub, idToken string
+
 func (h *helloHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var sub, idToken string
+	// fmt.Println("====>", r.URL.Path)
 	if r.URL.Path == strings.ReplaceAll(redirect_uri, fmt.Sprintf("http://localhost:%v", port), "") {
 		q := r.URL.Query()
 		sub, idToken = h.callback(q["code"][0])
+		text := fmt.Sprintf("Sub => %s\n\nId Token => %s\n", sub, idToken)
+		w.Write([]byte(text))
+		//
+		time.AfterFunc(time.Minute*2, func() {
+			os.Exit(0)
+		})
+	} else if r.URL.Path == "/postman" {
+		type Postman struct {
+			Sub     string `json:"sub"`
+			IdToken string `json:"id_token"`
+		}
+		p := Postman{
+			Sub:     sub,
+			IdToken: idToken,
+		}
+		b, _ := json.Marshal(p)
+		w.Write(b)
+		//
+		fmt.Printf("\n\n== Thank you, bye! ==\n")
+		time.AfterFunc(time.Second*1, func() {
+			os.Exit(0)
+		})
 	}
-	text := fmt.Sprintf("Sub => %s\n\nId Token => %s\n", sub, idToken)
-	w.Write([]byte(text))
 }
